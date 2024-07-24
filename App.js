@@ -6,6 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import DashboardScreen from './components/DashboardScreen';
 import LandingScreen from './components/LandingScreen';
 import RegisterScreen from './components/RegisterScreen';
+import SuccessAttendanceInScreen from './components/SuccessAttendanceInScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ function App() {
         {/* <Stack.Screen name="Dashboard" component={DashboardScreen} /> */}
         <Stack.Screen name="Landing" component={LandingScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        {/* <Stack.Screen name="SuccessAttendanceIn" component={SuccessAttendanceInScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
