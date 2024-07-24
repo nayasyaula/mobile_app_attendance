@@ -16,7 +16,7 @@ export default function RegisterScreen({ navigation }) {
                     colors={['#00509F', '#001D39']}
                     style={styles.gradient}
                 >
-                    <Text style={styles.buttonText}>Sign in</Text>
+                    <Text style={styles.buttonText}>Sign up</Text>
                 </LinearGradient>
             </TouchableOpacity>
         </View>
