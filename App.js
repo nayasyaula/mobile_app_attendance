@@ -1,16 +1,20 @@
-import * as React from 'react';
+
+import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from 'react-native-splash-screen';
+import { createStackNavigator } from '@react-navigation/stack';
+
 
 import DashboardScreen from './components/DashboardScreen';
 import LandingScreen from './components/LandingScreen';
 import RegisterScreen from './components/RegisterScreen';
 import SuccessAttendanceInScreen from './components/SuccessAttendanceInScreen';
+import HomeScreen from './components/HomeScreen'; 
+import ToDoListScreen from './components/ToDoListScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
-function App() {
+const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -18,9 +22,12 @@ function App() {
         <Stack.Screen name="Landing" component={LandingScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         {/* <Stack.Screen name="SuccessAttendanceIn" component={SuccessAttendanceInScreen} /> */}
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="ToDoList" component={ToDoListScreen}/>
       </Stack.Navigator>
+      <StatusBar style="auto" />
     </NavigationContainer>
   );
-}
+};
 
 export default App;
