@@ -109,7 +109,7 @@ const AttendanceScreen = () => {
           <Ionicons name="home" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
-          <Ionicons name="newspaper" size={28} color="#000" />
+          <Ionicons name="newspaper" size={28} color="#00509F" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
           <Ionicons name="barcode-sharp" size={29} color="#666666" />

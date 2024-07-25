@@ -64,7 +64,7 @@ export default function ProfileScreen({ navigation }) {
                 <Ionicons name="book" size={28} color="#666666" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
-                <Ionicons name="person" size={28} color="#666666" />
+                <Ionicons name="person" size={28} color="#00509F" />
                 </TouchableOpacity>
             </View>
         </View>
