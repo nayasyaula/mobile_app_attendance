@@ -36,14 +36,14 @@ export default function ProfileScreen({ navigation }) {
                     <Ionicons name="person" size={24} color="#000" style={styles.menuIcon} />
                     <Text style={styles.menuText}>Tentang akun</Text>
                     <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
-                        <Ionicons name="arrow-forward" size={20}/>
+                        <Ionicons name="arrow-forward" size={20} color={'#6B6B6B'}/>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Password1')}>
                     <Ionicons name="key" size={24} color="#000" style={styles.menuIcon} />
                     <Text style={styles.menuText}>Kata sandi</Text>
                     <View style={{ flexDirection: 'row-reverse', flex: 1 }}>
-                        <Ionicons name="arrow-forward" size={20} />
+                        <Ionicons name="arrow-forward" size={20} color={'#6B6B6B'} />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -58,7 +58,7 @@ export default function ProfileScreen({ navigation }) {
                 <Ionicons name="newspaper" size={28} color="#666666" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-                <Ionicons name="barcode-sharp" size={29} color="#666666" />
+                <Ionicons name="qr-code-sharp" size={29} color="#666666" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
                 <Ionicons name="book" size={28} color="#666666" />
@@ -105,12 +105,13 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginHorizontal: 20,
         borderRadius: 10,
-        marginTop: -30,
+        marginTop: -40,
         marginBottom: 20,
         alignItems: 'center'
     },
     statItem: {
         alignItems: 'center',
+        marginTop: 10
     },
     statValue: {
         fontSize: 20,
@@ -119,7 +120,8 @@ const styles = StyleSheet.create({
     },
     statLabel: {
         fontSize: 13,
-        color: '#808080',
+        color: '#9FA0A4',
+        fontWeight: 'bold',
     },
     body: {
         flex: 1,
@@ -141,10 +143,12 @@ const styles = StyleSheet.create({
     },
     menuIcon: {
         marginRight: 10,
+        color: '#6B6B6B'
     },
     menuText: {
         fontSize: 16,
         color: '#000',
+        fontWeight: 'bold',
     },
     logoutButton: {
         backgroundColor: '#EDF3FF',
@@ -155,8 +159,9 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
     logoutText: {
-        color: 'red',
+        color: '#FF0000',
         fontSize: 16,
+        fontWeight: 'bold',
     },
     footer: {
         flexDirection: 'row',
