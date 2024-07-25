@@ -94,7 +94,7 @@ const HomeScreen = () => {
       
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home" size={28} color="#000" />
+          <Ionicons name="home" size={28} color="#00509F" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
           <Ionicons name="newspaper" size={28} color="#666666" />

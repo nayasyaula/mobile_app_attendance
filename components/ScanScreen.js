@@ -23,7 +23,7 @@ const ScanScreen = () => {
           <Ionicons name="newspaper" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="barcode-sharp" size={28} color="#000" />
+          <Ionicons name="barcode-sharp" size={28} color="#00509F" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
           <Ionicons name="book" size={28} color="#666666" />
