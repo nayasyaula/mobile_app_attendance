@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         lineHeight: 30,
         textAlign: 'center',
-        fontFamily: 'lato-regular',
         letterSpacing: -0.32,
         marginBottom: 20,
     },
