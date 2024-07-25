@@ -12,18 +12,17 @@ const HomeScreen = () => {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Text style={styles.greeting}>Hello, Yosep Tomi!</Text>
-          <Text style={styles.migInfo}>MIGINFO</Text>
-          <Text style={styles.activitiesText}>Let's take a look at the activities and attendance here</Text>
           <View style={styles.dateContainer}>
             <Ionicons name="calendar-outline" size={24} color="black" style={styles.icon} />
             <Text style={styles.dateText}>Tue, 16 2024</Text>
           </View>
         </View>
-        <View style={styles.headerRight}>
+         <View style={styles.headerRight}>
           <Ionicons name="notifications-outline" size={24} color="black" style={styles.icon} />
           <Image source={require('../assets/img/profil.jpeg')} style={styles.profilePic} />
         </View>
       </View>
+      <ScrollView contentContainerStyle={styles.sections}>
       <View style={styles.cardContainer}>
         <LinearGradient
           colors={['#001D39', '#00509F']}
@@ -37,19 +36,19 @@ const HomeScreen = () => {
           <Text style={styles.cardTitle1}>Get In</Text>
           <Text style={styles.cardTime1}>08:00 PM</Text>
           <Text style={styles.cardStatus}>On Time</Text>
-          <Ionicons name="log-in" size={55} color="black" style={styles.cardIcon1} />
+          <Ionicons name="log-in" size={40} color="black" style={styles.cardIcon1} />
         </View>
         <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
           <Text style={styles.cardTitle}>On Time</Text>
           <Text style={styles.cardSubtitleTop}>Completing</Text>
           <Text style={styles.cardSubtitleBottom}>the Task</Text>
-          <Ionicons name="clipboard" size={45} color="black" style={styles.cardIcon1} />
+          <Ionicons name="clipboard" size={30} color="black" style={styles.cardIcon1} />
         </View>
         <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
           <Text style={styles.cardTitle}>Get Out</Text>
           <Text style={styles.cardTime1}>05:00 PM</Text>
           <Text style={styles.cardStatus}>On Time</Text>
-          <Ionicons name="log-out" size={55} color="black" style={styles.cardIcon1} />
+          <Ionicons name="log-out" size={40} color="black" style={styles.cardIcon1} />
         </View>
       </View>
       <View style={styles.activitiesContainer}>
@@ -59,12 +58,11 @@ const HomeScreen = () => {
         <Text style={styles.activitiesText2}>See More</Text>
         
         {/* <View style={styles.line1} /> */}
-        <ScrollView contentContainerStyle={styles.sections}>
         <View style={styles.dateSection}>
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
         <View style={styles.line1} />
@@ -72,7 +70,7 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
         <View style={styles.line1} />
@@ -80,7 +78,7 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
         <View style={styles.line1} />
@@ -88,29 +86,29 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
+      </View>
       </ScrollView>
       
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home" size={30} color="#666666" />
+          <Ionicons name="home" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
-          <Ionicons name="newspaper" size={30} color="#666666" />
+          <Ionicons name="newspaper" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="barcode-sharp" size={30} color="#666666" />
+          <Ionicons name="barcode-sharp" size={29} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
-          <Ionicons name="book" size={30} color="#666666" />
+          <Ionicons name="book" size={28} color="#666666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer}>
-          <Ionicons name="person" size={30} color="#666666" onPress={() => navigation.navigate('Profile')}/>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
+          <Ionicons name="person" size={28} color="#666666" />
         </TouchableOpacity>
       </View>
-    </View>
     </View>
   );
 };
@@ -153,7 +151,8 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 1,
+    marginBottom: 8,
   },
   icon: {
     marginHorizontal: 8,
@@ -164,20 +163,26 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: -90,
+    marginTop: 1,
+    marginBottom: 15,
     marginLeft: -90,
   },
+  iconNotif:{
+    marginHorizontal: 8,
+    marginTop: 79,
+  },
   profilePic: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 30,
     marginLeft: 8,
+    // marginTop: 79,
   },
   cardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 6,
+    marginTop: 10,
   },
   card: {
     width: '48%',
@@ -247,7 +252,7 @@ const styles = StyleSheet.create({
     marginRight: 81,
   },
   cardIcon1: {
-    marginTop: -55,
+    marginTop: -45,
     marginLeft: 'auto',
   },
   line: {
@@ -263,12 +268,14 @@ const styles = StyleSheet.create({
   },
   activitiesText1: {
     fontSize: 18,
-    marginTop: 8,
+    marginTop: 4,
+    marginBottom: 9,
     fontWeight: 'bold',
     color: '#666666',
   },
   activitiesText2: {
-    marginTop: -20,
+    marginTop: -31,
+    marginBottom: 8,
     marginLeft: 290,
     fontSize: 14,
   },
@@ -335,5 +342,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
+  
 export default HomeScreen;

@@ -17,19 +17,19 @@ const ScanScreen = () => {
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home" size={30} color="#666666" />
+          <Ionicons name="home" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
-          <Ionicons name="newspaper" size={30} color="#666666" />
+          <Ionicons name="newspaper" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="barcode-sharp" size={30} color="#666666" />
+          <Ionicons name="barcode-sharp" size={29} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
-          <Ionicons name="book" size={30} color="#666666" />
+          <Ionicons name="book" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
-          <Ionicons name="person" size={30} color="#666666" />
+          <Ionicons name="person" size={28} color="#666666" />
         </TouchableOpacity>
       </View>
     </View>
