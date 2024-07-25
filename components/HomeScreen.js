@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -22,7 +25,7 @@ const HomeScreen = () => {
         </View>
       </View>
       <View style={styles.cardContainer}>
-      <LinearGradient
+        <LinearGradient
           colors={['#001D39', '#00509F']}
           style={styles.card}
         >
@@ -52,7 +55,7 @@ const HomeScreen = () => {
         <View style={styles.line} />
         <Text style={styles.activitiesText1}>Recent Activity</Text>
         <Text style={styles.activitiesText1}>See More</Text>
-        
+
         {/* New Section */}
         <View style={styles.dateSection}>
           <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
@@ -68,7 +71,6 @@ const HomeScreen = () => {
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} />
           </View>
         </View>
-
       </View>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
@@ -83,7 +85,7 @@ const HomeScreen = () => {
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
           <Ionicons name="book-outline" size={30} color="#666666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
           <Ionicons name="person-outline" size={30} color="#666666" />
         </TouchableOpacity>
       </View>
@@ -92,17 +94,17 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: 'white',  // Set background color to white for the wallpaper effect
-        justifyContent: 'space-between',
-      },
-      header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      },
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: 'white',  // Set background color to white for the wallpaper effect
+    justifyContent: 'space-between',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   headerLeft: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '48%',
-    height: 85, 
+    height: 85,
     // backgroundColor: '#f9f9f9',
     padding: 10,
     borderRadius: 8,
@@ -248,12 +250,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 8,
-    marginLeft: 'auto', 
+    marginLeft: 'auto',
   },
   incomingPresenceText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginRight: 8, 
+    marginRight: 8,
     color: '#00509F',
     marginLeft: 20,
 
