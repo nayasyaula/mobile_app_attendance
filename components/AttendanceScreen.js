@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const ToDoListScreen = () => {
   const navigation = useNavigation();
@@ -33,9 +32,9 @@ const ToDoListScreen = () => {
       <View style={styles.line} />
 
       {/* Sections with flexGrow */}
-      <View style={styles.sections}>
+      <ScrollView contentContainerStyle={styles.sections}>
         <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
@@ -43,7 +42,7 @@ const ToDoListScreen = () => {
         </View>
         <View style={styles.line1} />
         <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
@@ -51,7 +50,7 @@ const ToDoListScreen = () => {
         </View>
         <View style={styles.line1} />
         <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
@@ -59,7 +58,7 @@ const ToDoListScreen = () => {
         </View>
         <View style={styles.line1} />
         <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
@@ -67,33 +66,23 @@ const ToDoListScreen = () => {
         </View>
         <View style={styles.line1} />
         <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
-      </View>
-
-      {/* Add Circle Button with Gradient + Icon */}
-      <TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate('CreateToDoList')}>
-        <LinearGradient
-          colors={['#001D39', '#00509F']}
-          style={styles.gradientCircle}
-        >
-          <Ionicons name="add" size={30} color="white" />
-        </LinearGradient>
-      </TouchableOpacity>
+      </ScrollView>
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
           <Ionicons name="home" size={30} color="#666666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('')}>
           <Ionicons name="newspaper" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="finger-print" size={30} color="#666666" />
+          <Ionicons name="barcode-sharp" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
           <Ionicons name="book" size={30} color="#666666" />
@@ -195,24 +184,6 @@ const styles = StyleSheet.create({
     marginLeft: 145,
     marginTop: -27,
   },
-  circleButton: {
-    position: 'absolute',
-    right: 20,
-    bottom: 80,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden'
-  },
-  gradientCircle: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-  },  
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

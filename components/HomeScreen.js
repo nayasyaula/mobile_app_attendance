@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -22,7 +25,7 @@ const HomeScreen = () => {
         </View>
       </View>
       <View style={styles.cardContainer}>
-      <LinearGradient
+        <LinearGradient
           colors={['#001D39', '#00509F']}
           style={styles.card}
         >
@@ -34,26 +37,27 @@ const HomeScreen = () => {
           <Text style={styles.cardTitle1}>Get In</Text>
           <Text style={styles.cardTime1}>08:00 PM</Text>
           <Text style={styles.cardStatus}>On Time</Text>
-          <Ionicons name="newspaper" size={34} color="black" style={styles.cardIcon1} />
+          <Ionicons name="log-in" size={55} color="black" style={styles.cardIcon1} />
         </View>
         <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
           <Text style={styles.cardTitle}>On Time</Text>
           <Text style={styles.cardSubtitleTop}>Completing</Text>
           <Text style={styles.cardSubtitleBottom}>the Task</Text>
-          <Ionicons name="clipboard-outline" size={34} color="black" style={styles.cardIcon1} />
+          <Ionicons name="clipboard" size={45} color="black" style={styles.cardIcon1} />
         </View>
         <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
           <Text style={styles.cardTitle}>Get Out</Text>
           <Text style={styles.cardTime1}>05:00 PM</Text>
           <Text style={styles.cardStatus}>On Time</Text>
-          <Ionicons name="newspaper" size={34} color="black" style={styles.cardIcon1} />
+          <Ionicons name="log-out" size={55} color="black" style={styles.cardIcon1} />
         </View>
+      </View>
+      <View style={styles.activitiesContainer}>
         <Text style={styles.activitiesText}>Top of Your List!</Text>
         <View style={styles.line} />
         <Text style={styles.activitiesText1}>Recent Activity</Text>
-        <Text style={styles.activitiesText1}>See More</Text>
+        <Text style={styles.activitiesText2}>See More</Text>
         
-        {/* New Section */}
         <View style={styles.dateSection}>
           <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
           <View style={styles.incomingPresenceContainer}>
@@ -68,23 +72,22 @@ const HomeScreen = () => {
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} />
           </View>
         </View>
-
       </View>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home-outline" size={30} color="#666666" />
+          <Ionicons name="home" size={30} color="#666666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('')}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
           <Ionicons name="newspaper" size={30} color="#666666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('')}>
-          <Ionicons name="finger-print-outline" size={30} color="#666666" />
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
+          <Ionicons name="barcode-sharp" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
-          <Ionicons name="book-outline" size={30} color="#666666" />
+          <Ionicons name="book" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer}>
-          <Ionicons name="person-outline" size={30} color="#666666" />
+          <Ionicons name="person" size={30} color="#666666" />
         </TouchableOpacity>
       </View>
     </View>
@@ -92,20 +95,21 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: 'white',  // Set background color to white for the wallpaper effect
-        justifyContent: 'space-between',
-      },
-      header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      },
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: 'white',
+    // justifyContent: 'space-between',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   headerLeft: {
     flexDirection: 'column',
     alignItems: 'flex-start',
+    flex:1,
   },
   greeting: {
     fontSize: 24,
@@ -148,18 +152,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: -2, // Adjust card position as needed
+    marginTop: 6,
   },
   card: {
     width: '48%',
-    height: 85, 
-    // backgroundColor: '#f9f9f9',
+    height: 85,
     padding: 10,
     borderRadius: 8,
     marginBottom: 16,
     elevation: 3,
     alignItems: 'center',
+    // flex: 1,
   },
+  dateSection: {
+    marginTop: 16,
+  },
+
   cardTime: {
     fontSize: 23,
     fontWeight: 'bold',
@@ -177,11 +185,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 8,
     marginRight: 45,
-    color: 'white', // Text color for gradient card
+    color: 'white',
   },
   cardLabel: {
     fontSize: 15,
-    color: 'white', // Text color for gradient card
+    color: 'white',
     marginTop: -40,
     marginRight: -100,
   },
@@ -210,7 +218,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight: 75,
     color: '#666666',
-
   },
   cardStatus: {
     fontSize: 15,
@@ -219,18 +226,19 @@ const styles = StyleSheet.create({
     marginRight: 81,
   },
   cardIcon1: {
-    marginTop: -45,
-    marginLeft: 'auto', // Adjust margin left to move icon to the right
-  },
-  cardIcon: {
-    marginTop: 16,
+    marginTop: -55,
+    marginLeft: 'auto',
   },
   line: {
     borderBottomWidth: 9,
     borderBottomColor: '#EDF3FF',
     width: '100%',
     marginTop: 8,
-    marginBottom: 16, // Adjust as needed
+    marginBottom: 16,
+  },
+  activitiesContainer: {
+    marginTop: 16,
+    flex: 1,
   },
   activitiesText1: {
     fontSize: 18,
@@ -238,8 +246,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#666666',
   },
+  activitiesText2: {
+    marginTop: -20,
+    marginLeft: 290,
+    fontSize: 14,
+  },
   dateSection: {
     marginTop: 16,
+    height: 50,
   },
   dateText1: {
     marginLeft: 20,
@@ -248,19 +262,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 8,
-    marginLeft: 'auto', 
+    marginLeft: 'auto',
   },
   incomingPresenceText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginRight: 8, 
+    marginRight: 59,
     color: '#00509F',
-    marginLeft: 20,
-
+    marginLeft: 10,
   },
   incomingIcon: {
-    marginLeft: 145, // Adjust margin left as needed
-    marginTop: -27,
+    marginLeft: 99,
+    marginTop: -29,
   },
   footer: {
     flexDirection: 'row',
