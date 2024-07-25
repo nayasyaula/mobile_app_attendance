@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+
 export default function ProfileScreen({ navigation }) {
     return (
         <View style={styles.container}>
@@ -51,19 +52,19 @@ export default function ProfileScreen({ navigation }) {
             </TouchableOpacity>
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
-                    <Ionicons name="home" size={30} color="#666666" />
+                <Ionicons name="home" size={28} color="#666666" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
-                    <Ionicons name="newspaper" size={30} color="#666666" />
+                <Ionicons name="newspaper" size={28} color="#666666" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Fingerprint')}>
-                    <Ionicons name="barcode-sharp" size={30} color="#666666" />
+                <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
+                <Ionicons name="barcode-sharp" size={29} color="#666666" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
-                    <Ionicons name="book" size={30} color="#666666" />
+                <Ionicons name="book" size={28} color="#666666" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
-                    <Ionicons name="person" size={30} color="#000" />
+                <Ionicons name="person" size={28} color="#666666" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -159,14 +160,15 @@ const styles = StyleSheet.create({
     },
     footer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingVertical: 10,
-        borderTopWidth: 1,
-        borderTopColor: '#e0e0e0',
-    },
-    iconContainer: {
+        justifyContent: 'space-between',
+        paddingVertical: 18,
+        backgroundColor: '#fff',
+      },
+      iconContainer: {
         alignItems: 'center',
-    },
+        flex: 1,
+        justifyContent: 'center',
+      },
     separator: {
         width: 1,
         height: '50%',

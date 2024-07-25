@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -6,6 +6,30 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const ToDoListScreen = () => {
   const navigation = useNavigation();
+  const [isMonthDropdownVisible, setMonthDropdownVisible] = useState(false);
+  const [isAllDropdownVisible, setAllDropdownVisible] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState('Month'); // default text for the button
+  const [selectedFilter, setSelectedFilter] = useState('All');
+  const [monthButtonLayout, setMonthButtonLayout] = useState(null);
+  const [filterButtonLayout, setFilterButtonLayout] = useState(null);
+
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const filters = [
+    'Present'
+  ];
+
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month);
+    setMonthDropdownVisible(false);
+  };
+
+  const handleFilterSelect = (filter) => {
+    setSelectedFilter(filter);
+    setAllDropdownVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -15,12 +39,20 @@ const ToDoListScreen = () => {
           <Text style={styles.dateText}>Tue, 16 July 2024</Text>
         </View>
         <View style={styles.filterContainer}>
-          <TouchableOpacity style={styles.filterItem}>
-            <Text style={styles.filterText}>All</Text>
+          <TouchableOpacity
+            style={styles.filterItem}
+            onPress={() => setAllDropdownVisible(!isAllDropdownVisible)}
+            onLayout={(event) => setFilterButtonLayout(event.nativeEvent.layout)}
+          >
+            <Text style={styles.filterText}>{selectedFilter}</Text>
             <Ionicons name="swap-vertical-outline" size={20} color="black" style={styles.icon1} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.filterItem}>
-            <Text style={styles.filterText}>Month</Text>
+          <TouchableOpacity
+            style={styles.filterItem}
+            onPress={() => setMonthDropdownVisible(!isMonthDropdownVisible)}
+            onLayout={(event) => setMonthButtonLayout(event.nativeEvent.layout)}
+          >
+            <Text style={styles.filterText}>{selectedMonth}</Text>
             <Ionicons name="arrow-down-outline" size={20} color="#666666" style={styles.icon1} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.filterItem1}>
@@ -32,47 +64,49 @@ const ToDoListScreen = () => {
       </View>
       <View style={styles.line} />
 
+      {/* Dropdown Menus */}
+      {isMonthDropdownVisible && monthButtonLayout && (
+        <View style={[styles.dropdownContainer, {
+          top: monthButtonLayout.y + monthButtonLayout.height + 40, 
+          left: monthButtonLayout.x + monthButtonLayout.height + 110,
+        }]}>
+          {months.map((month, index) => (
+            <TouchableOpacity key={index} style={styles.dropdownItem} onPress={() => handleMonthSelect(month)}>
+              <Text style={styles.dropdownText}>{month}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+      {isAllDropdownVisible && filterButtonLayout && (
+        <View style={[styles.dropdownContainer, {
+          top: filterButtonLayout.y + filterButtonLayout.height + 40, 
+          left: filterButtonLayout.x + monthButtonLayout.height + 110,
+        }]}>
+          {filters.map((filter, index) => (
+            <TouchableOpacity key={index} style={styles.dropdownItem} onPress={() => handleFilterSelect(filter)}>
+              <Text style={styles.dropdownText}>{filter}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+
       {/* Sections with flexGrow */}
-      <ScrollView contentContainerStyle={styles.sections}>
-        <View style={styles.dateSection}>
+      <ScrollView contentContainerStyle={styles.sections} >
+        <TouchableOpacity style={styles.dateSection} onPress={() => navigation.navigate('DetailToDoList')}>
           <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
-          <View style={styles.incomingPresenceContainer}>
+          <View style={styles.incomingPresenceContainer} >
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon}/>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={styles.line1} />
-        <View style={styles.dateSection}>
+        <TouchableOpacity style={styles.dateSection} onPress={() => navigation.navigate('DetailToDoList')}>
           <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} />
           </View>
-        </View>
-        <View style={styles.line1} />
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
-          </View>
-        </View>
-        <View style={styles.line1} />
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
-          </View>
-        </View>
-        <View style={styles.line1} />
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
-          </View>
-        </View>
+        </TouchableOpacity>      
       </ScrollView>
 
       {/* Add Circle Button with Gradient + Icon */}
@@ -87,19 +121,19 @@ const ToDoListScreen = () => {
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home" size={30} color="#666666" />
+          <Ionicons name="home" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
-          <Ionicons name="newspaper" size={30} color="#666666" />
+          <Ionicons name="newspaper" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="barcode-sharp" size={30} color="#666666" />
+          <Ionicons name="barcode-sharp" size={29} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
-          <Ionicons name="book" size={30} color="#666666" />
+          <Ionicons name="book" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
-          <Ionicons name="person" size={30} color="#666666" />
+          <Ionicons name="person" size={28} color="#666666" />
         </TouchableOpacity>
       </View>
     </View>
@@ -121,7 +155,7 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: -18,
+    marginTop: -38,
   },
   icon: {
     marginHorizontal: 8,
@@ -132,12 +166,17 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 25,
+    marginTop: 24,
+    marginBottom: 5,
+    flex: 1, // Make filterContainer flexible
+    justifyContent: 'space-evenly', // Distribute space evenly
   },
   filterItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 16,
+    flexShrink: 1, // Allow item to shrink if necessary
+    marginHorizontal: 4,
+    justifyContent: 'space-evenly', // Distribute space evenly
   },
   filterText: {
     fontSize: 15,
@@ -150,8 +189,8 @@ const styles = StyleSheet.create({
   iconBox: {
     width: 30,
     height: 30,
-    borderRadius: 5, // set borderRadius to a value less than half of width/height to create rounded corners
-    backgroundColor: '#00509F', // Set background color to match design
+    borderRadius: 5,
+    backgroundColor: '#00509F',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -204,7 +243,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   gradientCircle: {
     width: '100%',
@@ -212,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 30,
-  },  
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -220,6 +259,26 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     alignItems: 'center',
+  },
+  dropdownContainer: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    elevation: 4,
+    width: 150,
+    zIndex: 1000,
+    backgroundColor: '#00274F',
+  },
+  dropdownItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  dropdownText: {
+    fontSize: 15,
+    color: 'white',
   },
 });
 
