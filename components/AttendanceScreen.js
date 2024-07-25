@@ -78,7 +78,7 @@ const ToDoListScreen = () => {
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
           <Ionicons name="home" size={30} color="#666666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('')}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('AttendanceScreen')}>
           <Ionicons name="newspaper" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
