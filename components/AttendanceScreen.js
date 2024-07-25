@@ -68,7 +68,7 @@ const AttendanceScreen = () => {
                     <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
                     <View style={styles.incomingPresenceContainer}>
                         <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-                        <Ionicons name="log-in" size={30} color="black" style={styles.incomingIcon} />
+                        <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} />
                     </View>
                 </View>
                 <View style={styles.line1} />
@@ -76,15 +76,15 @@ const AttendanceScreen = () => {
                     <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
                     <View style={styles.incomingPresenceContainer}>
                         <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-                        <Ionicons name="log-in" size={30} color="black" style={styles.incomingIcon}/>
+                        <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon}/>
                     </View>
                 </View>
                 <View style={styles.line1} />
                 <View style={styles.dateSection} >
-                    <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+                    <Text style={styles.incomingPresenceText2}>Incoming Presence</Text>
                     <View style={styles.incomingPresenceContainer}>
                         <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-                        <Ionicons name="log-in" size={30} color="black" style={styles.incomingIcon}/>
+                        <Ionicons name="log-in" size={32} color="#292929" style={styles.incomingIcon}/>
                     </View>
                 </View>
                 <View style={styles.line1} />
@@ -92,7 +92,7 @@ const AttendanceScreen = () => {
                     <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
                     <View style={styles.incomingPresenceContainer}>
                         <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-                        <Ionicons name="log-in" size={30} color="black" style={styles.incomingIcon}/>
+                        <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon}/>
                     </View>
                 </View>
                 <View style={styles.line1} />
@@ -100,7 +100,7 @@ const AttendanceScreen = () => {
                     <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
                     <View style={styles.incomingPresenceContainer}>
                         <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-                        <Ionicons name="log-in" size={30} color="black" style={styles.incomingIcon}/>
+                        <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon}/>
                     </View>
                 </View>
             </ScrollView>
@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
     },
     filterText: {
         fontSize: 15,
-        color: '#666666',
+        color: '#000000',
+        fontWeight: 'bold',
     },
     icon1: {
         marginHorizontal: 4,
@@ -199,6 +200,8 @@ const styles = StyleSheet.create({
     },
     dateText1: {
         marginRight: 45,
+        color: '#000000',
+        fontWeight: 'bold',
     },
     incomingPresenceContainer: {
         flexDirection: 'row',
@@ -211,6 +214,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginRight: 13,
         color: '#00509F',
+        marginLeft: 10,
+    },
+    incomingPresenceText2 : {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginRight: 13,
+        color: '#FF0000',
         marginLeft: 10,
     },
     incomingIcon: {

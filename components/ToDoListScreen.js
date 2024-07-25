@@ -96,7 +96,7 @@ const ToDoListScreen = () => {
           <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
           <View style={styles.incomingPresenceContainer} >
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon}/>
+            <Ionicons name="newspaper" size={32} color="#00509F" style={styles.incomingIcon}/>
           </View>
         </TouchableOpacity>
         <View style={styles.line1} />
@@ -104,7 +104,15 @@ const ToDoListScreen = () => {
           <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} />
+            <Ionicons name="newspaper" size={32} color="#292929" style={styles.incomingIcon} />
+          </View>
+        </TouchableOpacity>      
+        <View style={styles.line1} />
+        <TouchableOpacity style={styles.dateSection} onPress={() => navigation.navigate('DetailToDoList')}>
+          <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
+          <View style={styles.incomingPresenceContainer}>
+            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+            <Ionicons name="newspaper" size={32} color="#00509F" style={styles.incomingIcon} />
           </View>
         </TouchableOpacity>      
       </ScrollView>
@@ -181,7 +189,8 @@ const styles = StyleSheet.create({
   filterText: {
     fontSize: 15,
     marginRight: 5,
-    color: '#666666',
+    color: '#000000',
+    fontWeight: 'bold',
   },
   icon1: {
     marginHorizontal: 4,
@@ -216,6 +225,7 @@ const styles = StyleSheet.create({
   },
   dateText1: {
     marginRight: 45,
+    color: '#00509F',
   },
   incomingPresenceContainer: {
     flexDirection: 'row',
@@ -227,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginRight: 13,
-    color: '#00509F',
+    color: '#000000',
     marginLeft: 10,
   },
   incomingIcon: {

@@ -62,7 +62,7 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
         <View style={styles.line1} />
@@ -70,7 +70,7 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
         <View style={styles.line1} />
@@ -78,7 +78,7 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
         <View style={styles.line1} />
@@ -86,7 +86,7 @@ const HomeScreen = () => {
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
             <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="newspaper" size={30} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+            <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
       </View>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   cardTime1: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#666666',
+    color: '#000000',
     marginRight: 65,
     marginBottom: -7,
   },
@@ -236,14 +236,14 @@ const styles = StyleSheet.create({
     marginTop: -2,
     fontWeight: 'bold',
     marginRight: 55,
-    color: '#666666',
+    color: '#000000',
   },
   cardSubtitleBottom: {
     fontSize: 17,
     marginTop: -5,
     fontWeight: 'bold',
     marginRight: 75,
-    color: '#666666',
+    color: '#000000',
   },
   cardStatus: {
     fontSize: 15,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 9,
     fontWeight: 'bold',
-    color: '#666666',
+    color: '#000000',
   },
   activitiesText2: {
     marginTop: -31,
@@ -291,6 +291,8 @@ const styles = StyleSheet.create({
   },
   dateText1: {
     marginRight: 45,
+    fontWeight: 'bold',
+    color: '#000000',
   },
   incomingPresenceContainer: {
     flexDirection: 'row',
