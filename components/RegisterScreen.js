@@ -11,7 +11,7 @@ export default function RegisterScreen({ navigation }) {
             <TextInput placeholder="Password" style={styles.input} secureTextEntry />
             <TextInput placeholder="Confirm Password" style={styles.input} secureTextEntry />
             <Text style={styles.confirmText}>confirm your password</Text>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => { /* Add your navigation logic here */ }}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Home')}>
                 <LinearGradient
                     colors={['#00509F', '#001D39']}
                     style={styles.gradient}
