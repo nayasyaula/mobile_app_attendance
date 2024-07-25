@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -58,21 +58,41 @@ const HomeScreen = () => {
         <Text style={styles.activitiesText1}>Recent Activity</Text>
         <Text style={styles.activitiesText2}>See More</Text>
         
+        {/* <View style={styles.line1} /> */}
+        <ScrollView contentContainerStyle={styles.sections}>
         <View style={styles.dateSection}>
-          <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} />
+            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
           </View>
         </View>
+        <View style={styles.line1} />
         <View style={styles.dateSection}>
-          <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} />
+            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
-      </View>
+        <View style={styles.line1} />
+        <View style={styles.dateSection}>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+          <View style={styles.incomingPresenceContainer}>
+            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+          </View>
+        </View>
+        <View style={styles.line1} />
+        <View style={styles.dateSection}>
+          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+          <View style={styles.incomingPresenceContainer}>
+            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+            <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+          </View>
+        </View>
+      </ScrollView>
+      
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
           <Ionicons name="home" size={30} color="#666666" />
@@ -91,6 +111,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
+    </View>
   );
 };
 
@@ -100,6 +121,10 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: 'white',
     // justifyContent: 'space-between',
+  },
+  sections: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
   },
   header: {
     flexDirection: 'row',
@@ -164,10 +189,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // flex: 1,
   },
-  dateSection: {
-    marginTop: 16,
-  },
-
   cardTime: {
     fontSize: 23,
     fontWeight: 'bold',
@@ -251,12 +272,18 @@ const styles = StyleSheet.create({
     marginLeft: 290,
     fontSize: 14,
   },
+  line1: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#EDF3FF',
+    width: '100%',
+    marginBottom: 16,
+  },
   dateSection: {
-    marginTop: 16,
-    height: 50,
+    marginTop: 8, // Increased margin to push the section lower
+    marginBottom: 8,
   },
   dateText1: {
-    marginLeft: 20,
+    marginRight: 45,
   },
   incomingPresenceContainer: {
     flexDirection: 'row',
@@ -265,16 +292,40 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   incomingPresenceText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    marginRight: 59,
+    marginRight: 13,
     color: '#00509F',
     marginLeft: 10,
   },
   incomingIcon: {
-    marginLeft: 99,
-    marginTop: -29,
+    marginLeft: 145,
+    marginTop: -27,
   },
+  // dateSection: {
+  //   marginTop: 16,
+  //   height: 50,
+  // },
+  // dateText1: {
+  //   marginLeft: 20,
+  // },
+  // incomingPresenceContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginTop: 8,
+  //   marginLeft: 'auto',
+  // },
+  // incomingPresenceText: {
+  //   fontSize: 16,
+  //   fontWeight: 'bold',
+  //   marginRight: 59,
+  //   color: '#00509F',
+  //   marginLeft: 10,
+  // },
+  // incomingIcon: {
+  //   marginLeft: 99,
+  //   marginTop: -29,
+  // },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

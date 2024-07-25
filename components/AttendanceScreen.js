@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-const ToDoListScreen = () => {
+const AttendanceScreen = () => {
   const navigation = useNavigation();
 
   return (
@@ -194,4 +194,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ToDoListScreen;
+export default AttendanceScreen;

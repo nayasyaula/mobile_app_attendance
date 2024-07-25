@@ -35,7 +35,7 @@ const App = () => {
         <Stack.Screen name="DetailToDoList" component={DetailToDoList}/>
         <Stack.Screen name="UpdateToDoList" component={UpdateToDoList}/>
         <Stack.Screen name='ScanScreen' component={ScanScreen}/>
-        <Stack.Screen name='AttendanceScreen' component={AttendanceScreen}/>    
+        <Stack.Screen name='AttendanceScreen'component={AttendanceScreen }/>    
         {/* <Stack.Screen name="SuccessAttendanceIn" component={SuccessAttendanceInScreen} /> */}
         {/* <Stack.Screen name="SuccessAttendanceLate" component={SuccessAttendanceLate} /> */}
         <Stack.Screen name="Profile" component={ProfileScreen} />
