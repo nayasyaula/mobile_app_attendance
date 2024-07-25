@@ -130,7 +130,7 @@ const ToDoListScreen = () => {
           <Ionicons name="barcode-sharp" size={29} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
-          <Ionicons name="book" size={28} color="#666666" />
+          <Ionicons name="book" size={28} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Profile')}>
           <Ionicons name="person" size={28} color="#666666" />
