@@ -107,7 +107,7 @@ const HomeScreen = () => {
           <Ionicons name="book" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer}>
-          <Ionicons name="person" size={30} color="#666666" />
+          <Ionicons name="person" size={30} color="#666666" onPress={() => navigation.navigate('Profile')}/>
         </TouchableOpacity>
       </View>
     </View>
