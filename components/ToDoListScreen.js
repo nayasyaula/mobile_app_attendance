@@ -33,7 +33,7 @@ const ToDoListScreen = () => {
       <View style={styles.line} />
 
       {/* Sections with flexGrow */}
-      <View style={styles.sections}>
+      <ScrollView contentContainerStyle={styles.sections}>
         <View style={styles.dateSection}>
           <Text style={styles.incomingPresenceText}>Membuat desain poster dan compro</Text>
           <View style={styles.incomingPresenceContainer}>
@@ -73,7 +73,7 @@ const ToDoListScreen = () => {
             <Ionicons name="newspaper" size={34} color="black" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       {/* Add Circle Button with Gradient + Icon */}
       <TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate('CreateToDoList')}>
@@ -93,7 +93,7 @@ const ToDoListScreen = () => {
           <Ionicons name="newspaper" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="finger-print" size={30} color="#666666" />
+          <Ionicons name="barcode-sharp" size={30} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
           <Ionicons name="book" size={30} color="#666666" />
