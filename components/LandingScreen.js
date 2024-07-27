@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'; // Import from expo-linea
 export default function LandingScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/logo-one.png')} style={styles.image} />
+            <Image source={require('../assets/logo1.png')} style={styles.image} />
             <Text style={styles.text}>
                 Create, share and play miginfo whenever and wherever you want
             </Text>
