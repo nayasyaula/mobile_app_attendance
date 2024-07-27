@@ -12,7 +12,7 @@ const ScanScreen = () => {
         <View style={styles.header}>
             <Text style={styles.text}>Scan</Text>
         </View>
-        <Ionicons name="finger-print" size={150} color="#00509F" />
+        <Ionicons name="qr-code-sharp" size={150} color="#00509F" />
       </View>
 
       <View style={styles.footer}>
@@ -23,7 +23,7 @@ const ScanScreen = () => {
           <Ionicons name="newspaper" size={28} color="#666666" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ScanScreen')}>
-          <Ionicons name="barcode-sharp" size={28} color="#00509F" />
+          <Ionicons name="qr-code-sharp" size={28} color="#00509F" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ToDoList')}>
           <Ionicons name="book" size={28} color="#666666" />
