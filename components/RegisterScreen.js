@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function RegisterScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/logo-two.png')} style={styles.image} />
+            <Image source={require('../assets/logo2.png')} style={styles.image} />
             <Text style={styles.heading}>Create your account</Text>
             <TextInput placeholder="Name" style={styles.input} />
             <TextInput placeholder="Password" style={styles.input} secureTextEntry />
