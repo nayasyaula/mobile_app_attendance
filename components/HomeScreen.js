@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
+    // marginLeft: 1,
   },
   migInfo: {
     fontSize: 18,
@@ -151,8 +152,9 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 1,
+    // marginTop: 1,
     marginBottom: 8,
+    marginLeft: -8,
   },
   icon: {
     marginHorizontal: 8,
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 1,
+    // marginTop: 1,
     marginBottom: 15,
     marginLeft: -90,
   },
@@ -242,14 +244,14 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginTop: -5,
     fontWeight: 'bold',
-    marginRight: 75,
+    marginRight: 76,
     color: '#000000',
   },
   cardStatus: {
     fontSize: 15,
     color: '#666666',
     marginTop: 3,
-    marginRight: 81,
+    marginRight: 82,
   },
   cardIcon1: {
     marginTop: -45,
@@ -268,7 +270,7 @@ const styles = StyleSheet.create({
   },
   activitiesText1: {
     fontSize: 18,
-    marginTop: 4,
+    // marginTop: 4,
     marginBottom: 9,
     fontWeight: 'bold',
     color: '#000000',
@@ -286,8 +288,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dateSection: {
-    marginTop: 8, // Increased margin to push the section lower
-    marginBottom: 8,
+    marginBottom: 16,
   },
   dateText1: {
     marginRight: 45,
@@ -303,7 +304,7 @@ const styles = StyleSheet.create({
   incomingPresenceText: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginRight: 13,
+    // marginRight: 13,
     color: '#00509F',
     marginLeft: 10,
   },
