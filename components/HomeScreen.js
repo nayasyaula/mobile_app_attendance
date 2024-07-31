@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import UserContext from '../components/UserContext';
+import moment from 'moment';
 
 const HomeScreen = () => {
+  const { user } = useContext(UserContext);
   const navigation = useNavigation();
+  const [currentTime, setCurrentTime] = useState('');
+  const [currentDate, setCurrentDate] = useState('');
+
+  useEffect(() => {
+    const now = moment();
+    setCurrentTime(now.format('HH:mm'));
+    setCurrentDate(now.format('ddd, D MMMM YYYY'));
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Text style={styles.greeting}>Hello, Yosep Tomi!</Text>
+          <Text style={styles.greeting}>Hello, {user ? user.name : 'Nama tidak ditemukan'}!</Text>
           <View style={styles.dateContainer}>
             <Ionicons name="calendar-outline" size={24} color="black" style={styles.icon} />
-            <Text style={styles.dateText}>Tue, 16 2024</Text>
+            <Text style={styles.dateText}>{currentDate}</Text>
           </View>
         </View>
          <View style={styles.headerRight}>
@@ -28,7 +39,7 @@ const HomeScreen = () => {
           colors={['#001D39', '#00509F']}
           style={styles.card}
         >
-          <Text style={styles.cardTime}>13:57</Text>
+          <Text style={styles.cardTime}>{currentTime}</Text>
           <Text style={styles.cardLocation}>Bogor, Indonesia</Text>
           <Text style={styles.cardLabel}>Hari Ini</Text>
         </LinearGradient>
@@ -57,7 +68,6 @@ const HomeScreen = () => {
         <Text style={styles.activitiesText1}>Recent Activity</Text>
         <Text style={styles.activitiesText2}>See More</Text>
         
-        {/* <View style={styles.line1} /> */}
         <View style={styles.dateSection}>
           <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
           <View style={styles.incomingPresenceContainer}>
@@ -118,7 +128,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: 'white',
-    // justifyContent: 'space-between',
   },
   sections: {
     flexGrow: 1,
@@ -178,7 +187,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 30,
     marginLeft: 8,
-    // marginTop: 79,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -194,7 +202,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     elevation: 3,
     alignItems: 'center',
-    // flex: 1,
   },
   cardTime: {
     fontSize: 23,
@@ -288,7 +295,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dateSection: {
-    marginBottom: 16,
+    marginTop: 8,
+    marginBottom: 8,
   },
   dateText1: {
     marginRight: 45,
@@ -312,30 +320,6 @@ const styles = StyleSheet.create({
     marginLeft: 145,
     marginTop: -27,
   },
-  // dateSection: {
-  //   marginTop: 16,
-  //   height: 50,
-  // },
-  // dateText1: {
-  //   marginLeft: 20,
-  // },
-  // incomingPresenceContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   marginTop: 8,
-  //   marginLeft: 'auto',
-  // },
-  // incomingPresenceText: {
-  //   fontSize: 16,
-  //   fontWeight: 'bold',
-  //   marginRight: 59,
-  //   color: '#00509F',
-  //   marginLeft: 10,
-  // },
-  // incomingIcon: {
-  //   marginLeft: 99,
-  //   marginTop: -29,
-  // },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -345,5 +329,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-  
+
 export default HomeScreen;
