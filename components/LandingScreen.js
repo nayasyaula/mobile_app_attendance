@@ -9,7 +9,7 @@ export default function LandingScreen({ navigation }) {
             <Text style={styles.text}>
                 Create, share and play miginfo whenever and wherever you want
             </Text>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Register')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Login')}>
                 <LinearGradient
                     colors={['#00509F', '#001D39']}
                     style={styles.gradient}
