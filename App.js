@@ -22,6 +22,7 @@ import AboutAccountScreen from './components/AboutAccountScreen';
 import PasswordOneScreen from './components/PasswordOneScreen';
 import PasswordTwoScreen from './components/PasswordTwoScreen';
 import SplashScreen from './components/SplashScreen';
+import LoginScreen from './components/LoginScreen';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,7 @@ const App = () => {
           <Stack.Screen name="AboutAcc" component={AboutAccountScreen} />
           <Stack.Screen name="Password1" component={PasswordOneScreen} />
           <Stack.Screen name="Password2" component={PasswordTwoScreen} />
+           <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>
