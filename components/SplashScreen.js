@@ -23,7 +23,7 @@ export default function SplashScreen({ navigation }) {
 
     return (
         <ImageBackground
-            source={require('../assets/7.jpg')} 
+            source={require('../assets/wpp.jpg')} 
             style={styles.background}
         >
             <View style={styles.container}>
