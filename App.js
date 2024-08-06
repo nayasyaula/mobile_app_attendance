@@ -3,8 +3,6 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { UserProvider } from './components/UserContext';
-
 import DashboardScreen from './components/DashboardScreen';
 import LandingScreen from './components/LandingScreen';
 import RegisterScreen from './components/RegisterScreen';
@@ -28,7 +26,6 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <UserProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="SplashScreen">
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
@@ -48,11 +45,10 @@ const App = () => {
           <Stack.Screen name="AboutAcc" component={AboutAccountScreen} />
           <Stack.Screen name="Password1" component={PasswordOneScreen} />
           <Stack.Screen name="Password2" component={PasswordTwoScreen} />
-           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>
-    </UserProvider>
   );
 };
 
