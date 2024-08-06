@@ -1,9 +1,50 @@
-import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PasswordOneScreen({ navigation }) {
+    const [password, setPassword] = useState('');
+    const [authToken, setAuthToken] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        const getTokenAndFetchUser = async () => {
+            const token = await AsyncStorage.getItem('authToken');
+            setAuthToken(token);
+        };
+        getTokenAndFetchUser();
+    }, []);
+
+    const handleNext = async () => {
+        if (!authToken) {
+            Alert.alert('Error', 'Authentication token is missing.');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://192.168.1.110:8000/api/users/verify-password', {
+                password: password,
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                }
+            });
+
+            if (response.data.success) {
+                navigation.navigate('Password2');
+            } else {
+                Alert.alert('Error', 'Incorrect password.');
+            }
+        } catch (error) {
+            console.error('Password verification failed:', error.response ? error.response.data : error.message);
+            Alert.alert('Error', 'An error occurred while verifying the password. Please try again.');
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -12,10 +53,25 @@ export default function PasswordOneScreen({ navigation }) {
             </View>
             <View style={styles.form}>
                 <Text style={styles.label}>Kata Sandi</Text>
-                <TextInput style={styles.input} placeholder="Masukan Email" />
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Masukkan Kata Sandi"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword}
+                    />
+                    <Ionicons
+                        name={showPassword ? "eye-off-outline" : "eye-outline"}
+                        size={24}
+                        color="gray"
+                        onPress={() => setShowPassword(!showPassword)}
+                        style={styles.eyeIcon}
+                    />
+                </View>
                 <Text style={styles.hint}>Masukkan sandi sebelumnya</Text>
             </View>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Password2')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={handleNext}>
                 <LinearGradient
                     colors={['#00509F', '#001D39']}
                     style={styles.gradient}
@@ -47,16 +103,24 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     label: {
-        fontSize: 14,
+        fontSize: 16,
         marginBottom: 5,
     },
-    input: {
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#00509F',
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        fontSize: 14,
-        marginBottom: 10,
+        borderRadius: 30,
+        paddingHorizontal: 15,
+        marginBottom: 15,
+        height: 50,
+    },
+    input: {
+        flex: 1,
+    },
+    eyeIcon: {
+        marginLeft: 10,
     },
     hint: {
         fontSize: 14,
