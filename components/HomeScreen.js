@@ -20,86 +20,82 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Text style={styles.greeting}>Hello, {user ? user.name : 'Nama tidak ditemukan'}!</Text>
-          <View style={styles.dateContainer}>
-            <Ionicons name="calendar-outline" size={24} color="black" style={styles.icon} />
-            <Text style={styles.dateText}>{currentDate}</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <Text style={styles.greeting}>Hello, {user ? user.name : 'Nama tidak ditemukan'}!</Text>
+            <View style={styles.dateContainer}>
+              <Ionicons name="calendar-outline" size={24} color="black" style={styles.icon} />
+              <Text style={styles.dateText}>{currentDate}</Text>
+            </View>
+          </View>
+          <View style={styles.headerRight}>
+            <Ionicons name="notifications-outline" size={24} color="black" style={styles.icon} />
+            <Image source={require('../assets/img/profil.jpeg')} style={styles.profilePic} />
           </View>
         </View>
-         <View style={styles.headerRight}>
-          <Ionicons name="notifications-outline" size={24} color="black" style={styles.icon} />
-          <Image source={require('../assets/img/profil.jpeg')} style={styles.profilePic} />
-        </View>
-      </View>
-      <ScrollView contentContainerStyle={styles.sections}>
-      <View style={styles.cardContainer}>
-        <LinearGradient
-          colors={['#001D39', '#00509F']}
-          style={styles.card}
-        >
-          <Text style={styles.cardTime}>{currentTime}</Text>
-          <Text style={styles.cardLocation}>Bogor, Indonesia</Text>
-          <Text style={styles.cardLabel}>Hari Ini</Text>
-        </LinearGradient>
-        <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
-          <Text style={styles.cardTitle1}>Get In</Text>
-          <Text style={styles.cardTime1}>08:00 PM</Text>
-          <Text style={styles.cardStatus}>On Time</Text>
-          <Ionicons name="log-in" size={40} color="black" style={styles.cardIcon1} />
-        </View>
-        <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
-          <Text style={styles.cardTitle}>On Time</Text>
-          <Text style={styles.cardSubtitleTop}>Completing</Text>
-          <Text style={styles.cardSubtitleBottom}>the Task</Text>
-          <Ionicons name="clipboard" size={30} color="black" style={styles.cardIcon1} />
-        </View>
-        <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
-          <Text style={styles.cardTitle}>Get Out</Text>
-          <Text style={styles.cardTime1}>05:00 PM</Text>
-          <Text style={styles.cardStatus}>On Time</Text>
-          <Ionicons name="log-out" size={40} color="black" style={styles.cardIcon1} />
-        </View>
-      </View>
-      <View style={styles.activitiesContainer}>
-        <Text style={styles.activitiesText}>Top of Your List!</Text>
-        <View style={styles.line} />
-        <Text style={styles.activitiesText1}>Recent Activity</Text>
-        <Text style={styles.activitiesText2}>See More</Text>
-        
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+        <View style={styles.cardContainer}>
+          <LinearGradient colors={['#001D39', '#00509F']} style={styles.card}>
+            <Text style={styles.cardTime}>{currentTime}</Text>
+            <Text style={styles.cardLocation}>Bogor, Indonesia</Text>
+            <Text style={styles.cardLabel}>Hari Ini</Text>
+          </LinearGradient>
+          <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
+            <Text style={styles.cardTitle1}>Get In</Text>
+            <Text style={styles.cardTime1}>08:00 PM</Text>
+            <Text style={styles.cardStatus}>On Time</Text>
+            <Ionicons name="log-in" size={40} color="black" style={styles.cardIcon1} />
+          </View>
+          <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
+            <Text style={styles.cardTitle}>On Time</Text>
+            <Text style={styles.cardSubtitleTop}>Completing</Text>
+            <Text style={styles.cardSubtitleBottom}>the Task</Text>
+            <Ionicons name="clipboard" size={30} color="black" style={styles.cardIcon1} />
+          </View>
+          <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
+            <Text style={styles.cardTitle}>Get Out</Text>
+            <Text style={styles.cardTime1}>05:00 PM</Text>
+            <Text style={styles.cardStatus}>On Time</Text>
+            <Ionicons name="log-out" size={40} color="black" style={styles.cardIcon1} />
           </View>
         </View>
-        <View style={styles.line1} />
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
+        <View style={styles.activitiesContainer}>
+          <Text style={styles.activitiesText}>Top of Your List!</Text>
+          <View style={styles.line} />
+          <Text style={styles.activitiesText1}>Recent Activity</Text>
+          <Text style={styles.activitiesText2}>See More</Text>
+          <View style={styles.dateSection}>
+            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+            <View style={styles.incomingPresenceContainer}>
+              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+              <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+            </View>
+          </View>
+          <View style={styles.line1} />
+          <View style={styles.dateSection}>
+            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+            <View style={styles.incomingPresenceContainer}>
+              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+              <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+            </View>
+          </View>
+          <View style={styles.line1} />
+          <View style={styles.dateSection}>
+            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+            <View style={styles.incomingPresenceContainer}>
+              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+              <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+            </View>
+          </View>
+          <View style={styles.line1} />
+          <View style={styles.dateSection}>
+            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+            <View style={styles.incomingPresenceContainer}>
+              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+              <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+            </View>
           </View>
         </View>
-        <View style={styles.line1} />
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
-          </View>
-        </View>
-        <View style={styles.line1} />
-        <View style={styles.dateSection}>
-          <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-          <View style={styles.incomingPresenceContainer}>
-            <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-            <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')}/>
-          </View>
-        </View>
-      </View>
       </ScrollView>
       
       <View style={styles.footer}>
@@ -120,7 +116,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
@@ -292,11 +288,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: '#EDF3FF',
     width: '100%',
-    marginBottom: 16,
+    marginBottom: 5,
   },
   dateSection: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: 7,
+    marginBottom: 7,
   },
   dateText1: {
     marginRight: 45,
@@ -314,7 +310,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     // marginRight: 13,
     color: '#00509F',
-    marginLeft: 10,
+    marginLeft: 11,
   },
   incomingIcon: {
     marginLeft: 145,

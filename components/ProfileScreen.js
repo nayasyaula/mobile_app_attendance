@@ -70,7 +70,7 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => { /* Add your logout logic here */ }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => { 'logout' }}>
                 <Text style={styles.logoutText}>Log out</Text>
             </TouchableOpacity>
             <View style={styles.footer}>

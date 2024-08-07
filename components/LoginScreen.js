@@ -10,13 +10,17 @@ export default function LoginScreen({ navigation }) {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://192.168.1.109:8000/api/login', {
+            const response = await axios.post('http://192.168.0.122:8000/api/login', {
                 email,
                 password,
             });
     
             const { token } = response.data;
             await AsyncStorage.setItem('authToken', token);
+    
+            // Verify stored token
+            const storedToken = await AsyncStorage.getItem('authToken');
+            console.log('Stored Token:', storedToken);
     
             navigation.navigate('Home');
         } catch (error) {
@@ -33,7 +37,6 @@ export default function LoginScreen({ navigation }) {
     };
     
     
-
     return (
         <View style={styles.container}>
             <Image source={require('../assets/logo2.png')} style={styles.image} />

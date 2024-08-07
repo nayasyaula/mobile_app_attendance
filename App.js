@@ -27,6 +27,7 @@ import LoginScreen from './components/LoginScreen';
 const Stack = createStackNavigator();
 
 const App = () => {
+
   return (
     <UserProvider>
       <NavigationContainer>
@@ -36,7 +37,7 @@ const App = () => {
           <Stack.Screen name="Landing" component={LandingScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="ToDoList" component={ToDoListScreen} />
+          <Stack.Screen name="ToDoList" options={{ headerShown: false }} component={ToDoListScreen} />
           <Stack.Screen name="CreateToDoList" component={CreateToDoListScreen} />
           <Stack.Screen name="DetailToDoList" component={DetailToDoList} />
           <Stack.Screen name="UpdateToDoList" component={UpdateToDoList} />
@@ -48,7 +49,7 @@ const App = () => {
           <Stack.Screen name="AboutAcc" component={AboutAccountScreen} />
           <Stack.Screen name="Password1" component={PasswordOneScreen} />
           <Stack.Screen name="Password2" component={PasswordTwoScreen} />
-           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>
