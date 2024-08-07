@@ -1,29 +1,69 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import UserContext from '../components/UserContext';
-import moment from 'moment';
+import moment from 'moment-timezone';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
-  const { user } = useContext(UserContext);
   const navigation = useNavigation();
   const [currentTime, setCurrentTime] = useState('');
   const [currentDate, setCurrentDate] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [user, setUser] = useState({ name: '' });
+
+  const fetchUser = useCallback(async (token) => {
+    try {
+      const response = await axios.get('http://192.168.1.110:8000/api/users/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      console.log('User data fetched:', response.data);
+      setUser(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    AsyncStorage.getItem('authToken')
+      .then((token) => fetchUser(token))
+      .finally(() => setRefreshing(false));
+  }, [fetchUser]);
 
   useEffect(() => {
-    const now = moment();
-    setCurrentTime(now.format('HH:mm'));
-    setCurrentDate(now.format('ddd, D MMMM YYYY'));
-  }, []);
+    const updateTime = () => {
+      const now = moment().tz('Asia/Jakarta');
+      setCurrentTime(now.format('HH:mm'));
+      setCurrentDate(now.format('ddd, D MMMM YYYY'));
+    };
+
+    updateTime(); // Set initial time and date
+
+    const intervalId = setInterval(updateTime, 1000); // Update every second
+
+    AsyncStorage.getItem('authToken').then((token) => {
+      if (token) {
+        fetchUser(token);
+      }
+    });
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [fetchUser]);
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={styles.greeting}>Hello, {user ? user.name : 'Nama tidak ditemukan'}!</Text>
+            <Text style={styles.greeting}>Hello, {user.name}!</Text>
             <View style={styles.dateContainer}>
               <Ionicons name="calendar-outline" size={24} color="black" style={styles.icon} />
               <Text style={styles.dateText}>{currentDate}</Text>
@@ -31,73 +71,81 @@ const HomeScreen = () => {
           </View>
           <View style={styles.headerRight}>
             <Ionicons name="notifications-outline" size={24} color="black" style={styles.icon} />
-            <Image source={require('../assets/img/profil.jpeg')} style={styles.profilePic} />
+            <Image source={user.profile ? { uri: user.profile } : require('../assets/img/profil.jpeg')} style={styles.profilePic} />
           </View>
         </View>
-        <View style={styles.cardContainer}>
-          <LinearGradient colors={['#001D39', '#00509F']} style={styles.card}>
-            <Text style={styles.cardTime}>{currentTime}</Text>
-            <Text style={styles.cardLocation}>Bogor, Indonesia</Text>
-            <Text style={styles.cardLabel}>Hari Ini</Text>
-          </LinearGradient>
-          <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
-            <Text style={styles.cardTitle1}>Get In</Text>
-            <Text style={styles.cardTime1}>08:00 PM</Text>
-            <Text style={styles.cardStatus}>On Time</Text>
-            <Ionicons name="log-in" size={40} color="black" style={styles.cardIcon1} />
-          </View>
-          <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
-            <Text style={styles.cardTitle}>On Time</Text>
-            <Text style={styles.cardSubtitleTop}>Completing</Text>
-            <Text style={styles.cardSubtitleBottom}>the Task</Text>
-            <Ionicons name="clipboard" size={30} color="black" style={styles.cardIcon1} />
-          </View>
-          <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
-            <Text style={styles.cardTitle}>Get Out</Text>
-            <Text style={styles.cardTime1}>05:00 PM</Text>
-            <Text style={styles.cardStatus}>On Time</Text>
-            <Ionicons name="log-out" size={40} color="black" style={styles.cardIcon1} />
-          </View>
-        </View>
-        <View style={styles.activitiesContainer}>
-          <Text style={styles.activitiesText}>Top of Your List!</Text>
-          <View style={styles.line} />
-          <Text style={styles.activitiesText1}>Recent Activity</Text>
-          <Text style={styles.activitiesText2}>See More</Text>
-          <View style={styles.dateSection}>
-            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-            <View style={styles.incomingPresenceContainer}>
-              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-              <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+        <ScrollView contentContainerStyle={styles.sections}>
+          <View style={styles.cardContainer}>
+            <LinearGradient
+              colors={['#001D39', '#00509F']}
+              style={styles.card}
+            >
+              <Text style={styles.cardTime}>{currentTime}</Text>
+              <Text style={styles.cardLocation}>Bogor, Indonesia</Text>
+              <Text style={styles.cardLabel}>Hari Ini</Text>
+            </LinearGradient>
+            <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
+              <Text style={styles.cardTitle1}>Get In</Text>
+              <Text style={styles.cardTime1}>08:00 PM</Text>
+              <Text style={styles.cardStatus}>On Time</Text>
+              <Ionicons name="log-in" size={40} color="black" style={styles.cardIcon1} />
+            </View>
+            <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
+              <Text style={styles.cardTitle}>On Time</Text>
+              <Text style={styles.cardSubtitleTop}>Completing</Text>
+              <Text style={styles.cardSubtitleBottom}>the Task</Text>
+              <Ionicons name="clipboard" size={30} color="black" style={styles.cardIcon1} />
+            </View>
+            <View style={[styles.card, { backgroundColor: '#EDF3FF' }]}>
+              <Text style={styles.cardTitle}>Get Out</Text>
+              <Text style={styles.cardTime1}>05:00 PM</Text>
+              <Text style={styles.cardStatus}>On Time</Text>
+              <Ionicons name="log-out" size={40} color="black" style={styles.cardIcon1} />
             </View>
           </View>
-          <View style={styles.line1} />
-          <View style={styles.dateSection}>
-            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-            <View style={styles.incomingPresenceContainer}>
-              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-              <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+          <View style={styles.activitiesContainer}>
+            <Text style={styles.activitiesText}>Top of Your List!</Text>
+            <View style={styles.line} />
+            <View style={styles.activitiesHeadContainer}>
+              <Text style={styles.activitiesText1}>Recent Activity</Text>
+              <Text style={styles.activitiesText2}>See More</Text>
+            </View>
+
+            <View style={styles.dateSection}>
+              <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+              <View style={styles.incomingPresenceContainer}>
+                <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+                <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+              </View>
+            </View>
+            <View style={styles.line1} />
+            <View style={styles.dateSection}>
+              <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+              <View style={styles.incomingPresenceContainer}>
+                <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+                <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+              </View>
+            </View>
+            <View style={styles.line1} />
+            <View style={styles.dateSection}>
+              <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+              <View style={styles.incomingPresenceContainer}>
+                <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+                <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+              </View>
+            </View>
+            <View style={styles.line1} />
+            <View style={styles.dateSection}>
+              <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
+              <View style={styles.incomingPresenceContainer}>
+                <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
+                <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
+              </View>
             </View>
           </View>
-          <View style={styles.line1} />
-          <View style={styles.dateSection}>
-            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-            <View style={styles.incomingPresenceContainer}>
-              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-              <Ionicons name="log-in" size={32} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
-            </View>
-          </View>
-          <View style={styles.line1} />
-          <View style={styles.dateSection}>
-            <Text style={styles.incomingPresenceText}>Incoming Presence</Text>
-            <View style={styles.incomingPresenceContainer}>
-              <Text style={styles.dateText1}>Wed, 17 July 2024</Text>
-              <Ionicons name="log-out" size={30} color="#00274F" style={styles.incomingIcon} onPress={() => navigation.navigate('DetailToDoList')} />
-            </View>
-          </View>
-        </View>
+        </ScrollView>
       </ScrollView>
-      
+
       <View style={styles.footer}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Home')}>
           <Ionicons name="home" size={28} color="#00509F" />
@@ -137,17 +185,12 @@ const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    flex:1,
+    flex: 1,
   },
   greeting: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-    // marginLeft: 1,
-  },
-  migInfo: {
-    fontSize: 18,
-    marginTop: 0,
   },
   activitiesText: {
     fontSize: 20,
@@ -157,7 +200,6 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // marginTop: 1,
     marginBottom: 8,
     marginLeft: -8,
   },
@@ -170,13 +212,8 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    // marginTop: 1,
     marginBottom: 15,
     marginLeft: -90,
-  },
-  iconNotif:{
-    marginHorizontal: 8,
-    marginTop: 79,
   },
   profilePic: {
     width: 50,
@@ -271,17 +308,19 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flex: 1,
   },
+  activitiesHeadContainer: {
+    flex: 1,
+    flexDirection: "row",
+    width: "auto",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
   activitiesText1: {
     fontSize: 18,
-    // marginTop: 4,
-    marginBottom: 9,
     fontWeight: 'bold',
     color: '#000000',
   },
   activitiesText2: {
-    marginTop: -31,
-    marginBottom: 8,
-    marginLeft: 290,
     fontSize: 14,
   },
   line1: {
@@ -291,31 +330,29 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   dateSection: {
-    marginTop: 7,
-    marginBottom: 7,
+    marginTop: 8,
+    marginBottom: 8,
+    flex: 1,
+    flexDirection: "column",
+    gap: 3
   },
   dateText1: {
-    marginRight: 45,
+    textAlign: "left",
     fontWeight: 'bold',
     color: '#000000',
   },
   incomingPresenceContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
-    marginLeft: 'auto',
+    justifyContent: "space-between"
   },
   incomingPresenceText: {
     fontSize: 14,
     fontWeight: 'bold',
-    // marginRight: 13,
     color: '#00509F',
-    marginLeft: 11,
   },
-  incomingIcon: {
-    marginLeft: 145,
-    marginTop: -27,
-  },
+  incomingIcon: {},
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

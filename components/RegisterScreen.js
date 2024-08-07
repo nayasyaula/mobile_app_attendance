@@ -1,151 +1,206 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import { Picker } from '@react-native-picker/picker';
-import UserContext from '../components/UserContext';
+import { useController, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Loading from './Loading';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const formSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().nonempty("Email is required").email("Email must be valid"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+    telp: z.string().min(11, "Phone number must be at least 11 characters"),
+    tempat_lahir: z.string().nonempty("Place of birth is required"),
+    tanggal_lahir: z.string().nonempty("Date of birth is required"),
+    jenis_kelamin: z.string().nonempty("Gender is required"),
+    status: z.string().nonempty("Status is required"),
+    jurusan: z.string().nonempty("Major is required"),
+    sekolah: z.string().nonempty("School is required"),
+    agama: z.string().nonempty("Religion is required"),
+    alamat: z.string().nonempty("Address is required"),
+}).refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"], // path of error
+});
+
+function Input({ name, control, placeholder, secureTextEntry, errors }) {
+    const { field } = useController({
+        control,
+        name,
+        defaultValue: ""
+    });
+
+    const [showPassword, setShowPassword] = useState(secureTextEntry);
+
+    return (
+        <View style={styles.inputContainer}>
+            <TextInput
+                placeholder={placeholder}
+                onChangeText={field.onChange}
+                value={field.value}
+                style={styles.input}
+                secureTextEntry={secureTextEntry && !showPassword}
+            />
+            {secureTextEntry && (
+                <Ionicons
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    size={24}
+                    color="gray"
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.eyeIcon}
+                />
+            )}
+            {errors[name] && <Text style={styles.errorText}>{errors[name]?.message}</Text>}
+        </View>
+    );
+}
+
+function PickerInput({ name, control, options, placeholder, errors }) {
+    const { field } = useController({
+        control,
+        name,
+        defaultValue: ""
+    });
+
+    return (
+        <>
+            <View style={styles.pickerContainer}>
+                <Picker
+                    selectedValue={field.value}
+                    onValueChange={field.onChange}
+                    style={styles.picker}
+                >
+                    <Picker.Item label={placeholder} value="" />
+                    {options.map((option) => (
+                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+                    ))}
+                </Picker>
+            </View>
+            {errors[name] && <Text style={styles.errorText}>{errors[name]?.message}</Text>}
+        </>
+    );
+}
 
 export default function RegisterScreen({ navigation }) {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [telp, setTelp] = useState('');
-    const [tempatLahir, setTempatLahir] = useState('');
-    const [tanggalLahir, setTanggalLahir] = useState('');
-    const [jenisKelamin, setJenisKelamin] = useState('');
-    const [status, setStatus] = useState('');
-    const [agama, setAgama] = useState('');
-    const [alamat, setAlamat] = useState('');
-    const { setUser } = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
 
-    const handleRegister = async () => {
-        if (password !== confirmPassword) {
-            Alert.alert('Error', 'Passwords do not match');
-            return;
-        }
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: zodResolver(formSchema)
+    });
 
+    const onSubmit = async (data) => {
+        setLoading(true);
         try {
             const response = await axios.post('http://192.168.1.110:8000/api/register', {
-                name,
-                email,
-                password,
-                password_confirmation: confirmPassword,
-                telp,
-                tempat_lahir: tempatLahir,
-                tanggal_lahir: tanggalLahir,
-                jenis_kelamin: jenisKelamin,
-                status,
-                agama,
-                alamat,
+                ...data,
+                password_confirmation: data.confirmPassword,
             });
 
-            console.log('API Response:', response.data); // Debugging log
             if (response.data.success) {
                 Alert.alert('Success', 'Registration successful');
-                setUser({ name, email }); // Set user data to context
                 navigation.navigate('Profile');
             } else {
                 Alert.alert('Error', response.data.message || 'Registration failed');
             }
         } catch (error) {
-            console.error('API Error:', error); // Debugging log
+            console.error('API Error:', error);
             if (error.response && error.response.data && error.response.data.errors) {
                 const errorMessage = Object.values(error.response.data.errors).flat().join('\n');
                 Alert.alert('Error', errorMessage);
             } else {
                 Alert.alert('Error', 'An error occurred during registration');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Image source={require('../assets/logo2.png')} style={styles.image} />
-            <Text style={styles.heading}>Create your account</Text>
-            <TextInput
-                placeholder="Name"
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-            />
-            <TextInput
-                placeholder="Email"
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-            />
-            <TextInput
-                placeholder="Password"
-                style={styles.input}
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-            />
-            <TextInput
-                placeholder="Confirm Password"
-                style={styles.input}
-                secureTextEntry
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-            />
-            <TextInput
-                placeholder="Phone"
-                style={styles.input}
-                value={telp}
-                onChangeText={setTelp}
-            />
-            <TextInput
-                placeholder="Place of Birth"
-                style={styles.input}
-                value={tempatLahir}
-                onChangeText={setTempatLahir}
-            />
-            <TextInput
-                placeholder="Date of Birth (YYYY-MM-DD)"
-                style={styles.input}
-                value={tanggalLahir}
-                onChangeText={setTanggalLahir}
-            />
-            <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={jenisKelamin}
-                    style={styles.picker}
-                    onValueChange={(itemValue) => setJenisKelamin(itemValue)}
-                >
-                    <Picker.Item label="Select Gender" value="" />
-                    <Picker.Item label="Perempuan" value="perempuan" />
-                    <Picker.Item label="Laki-laki" value="laki_laki" />
-                </Picker>
-            </View>
-            <TextInput
-                placeholder="Status"
-                style={styles.input}
-                value={status}
-                onChangeText={setStatus}
-            />
-            <TextInput
-                placeholder="Religion"
-                style={styles.input}
-                value={agama}
-                onChangeText={setAgama}
-            />
-            <TextInput
-                placeholder="Address"
-                style={styles.input}
-                value={alamat}
-                onChangeText={setAlamat}
-            />
-            <Text style={styles.confirmText}>Confirm your password</Text>
-            <TouchableOpacity style={styles.buttonContainer} onPress={handleRegister}>
-                <LinearGradient
-                    colors={['#00509F', '#001D39']}
-                    style={styles.gradient}
-                >
-                    <Text style={styles.buttonText}>Register</Text>
-                </LinearGradient>
-            </TouchableOpacity>
-        </ScrollView>
+        <>
+            {loading && <Loading />}
+            <ScrollView contentContainerStyle={styles.container}>
+                <Image source={require('../assets/logo2.png')} style={styles.image} />
+                <Text style={styles.heading}>Create your account</Text>
+                <Input name="name" control={control} placeholder="Name" errors={errors} />
+                <Input name="email" control={control} placeholder="Email" errors={errors} />
+                <Input name="password" control={control} placeholder="Password" secureTextEntry={true} errors={errors} />
+                <Text style={styles.confirmText}>Confirm your password</Text>
+                <Input name="confirmPassword" control={control} placeholder="Confirm Password" secureTextEntry={true} errors={errors} />
+                <Input name="telp" control={control} placeholder="Phone" errors={errors} />
+                <Input name="tempat_lahir" control={control} placeholder="Place of Birth" errors={errors} />
+                <Input name="tanggal_lahir" control={control} placeholder="Date of Birth" errors={errors} />
+                <PickerInput
+                    name="jenis_kelamin"
+                    control={control}
+                    placeholder="Gender"
+                    errors={errors}
+                    options={[
+                        { value: "Perempuan", label: "Perempuan" },
+                        { value: "Laki-laki", label: "Laki-laki" },
+                    ]}
+                />
+                <PickerInput
+                    name="status"
+                    control={control}
+                    placeholder="Status"
+                    errors={errors}
+                    options={[
+                        { value: "Pelajar", label: "Pelajar" },
+                        { value: "Mahasiswa", label: "Mahasiswa" },
+                        { value: "Pekerja", label: "Pekerja" },
+                    ]}
+                />
+                <PickerInput
+                    name="jurusan"
+                    control={control}
+                    placeholder="Major"
+                    errors={errors}
+                    options={[
+                        { value: "DKV", label: "DKV" },
+                        { value: "TJKT", label: "TJKT" },
+                        { value: "PPLG", label: "PPLG" }
+                    ]}
+                />
+                <PickerInput
+                    name="sekolah"
+                    control={control}
+                    placeholder="School"
+                    errors={errors}
+                    options={[
+                        { value: "SMK Wikrama Bogor", label: "SMK Wikrama Bogor" },
+                        { value: "SMKN 3 BOGOR", label: "SMKN 3 BOGOR" }
+                    ]}
+                />
+                <PickerInput
+                    name="agama"
+                    control={control}
+                    placeholder="Religion"
+                    errors={errors}
+                    options={[
+                        { value: "Islam", label: "Islam" },
+                        { value: "Kristen", label: "Kristen" },
+                        { value: "Katolik", label: "Katolik" },
+                        { value: "Hindu", label: "Hindu" },
+                        { value: "Buddha", label: "Buddha" },
+                        { value: "Konghucu", label: "Konghucu" },
+                    ]}
+                />
+                <Input name="alamat" control={control} placeholder="Address" errors={errors} />
+                <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit(onSubmit)}>
+                    <LinearGradient
+                        colors={['#00509F', '#001D39']}
+                        style={styles.gradient}
+                    >
+                        <Text style={styles.buttonText}>Register</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+            </ScrollView>
+        </>
     );
 }
 
@@ -172,14 +227,17 @@ const styles = StyleSheet.create({
         letterSpacing: -0.32,
         color: '#00000099',
     },
-    input: {
+    inputContainer: {
         width: '90%',
+        position: 'relative',
+        marginBottom: 15,
+    },
+    input: {
         height: 50,
         borderColor: '#00509F',
         borderWidth: 1,
         borderRadius: 30,
         paddingHorizontal: 15,
-        marginBottom: 15,
     },
     pickerContainer: {
         width: '90%',
@@ -193,6 +251,12 @@ const styles = StyleSheet.create({
     picker: {
         width: '100%',
         height: '100%',
+    },
+    errorText: {
+        color: 'red',
+        alignSelf: 'flex-start',
+        marginLeft: 25,
+        marginBottom: 20,
     },
     confirmText: {
         alignSelf: 'flex-start',
@@ -215,5 +279,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    eyeIcon: {
+        position: 'absolute',
+        right: 15,
+        top: 15,
     },
 });

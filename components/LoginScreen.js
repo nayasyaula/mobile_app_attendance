@@ -3,73 +3,115 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } fro
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useForm, useController } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import Loading from './Loading';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const formSchema = z.object({
+    email: z.string().min(1, "Email is required").email("Email must be valid"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+function Input({ name, control, placeholder, secureTextEntry, errors }) {
+    const { field } = useController({
+        control,
+        name,
+        defaultValue: ""
+    });
+
+    const [showPassword, setShowPassword] = useState(secureTextEntry);
+
+    return (
+        <View style={styles.inputContainer}>
+            <TextInput
+                placeholder={placeholder}
+                onChangeText={field.onChange}
+                value={field.value}
+                style={styles.input}
+                secureTextEntry={secureTextEntry && showPassword}
+            />
+            {secureTextEntry && (
+                <Ionicons
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    size={24}
+                    color="gray"
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.eyeIcon}
+                />
+            )}
+            {errors[name] && <Text style={styles.errorText}>{errors[name]?.message}</Text>}
+        </View>
+    );
+}
 
 export default function LoginScreen({ navigation }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = async () => {
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: zodResolver(formSchema)
+    });
+
+    const onSubmit = async (data) => {
+        setLoading(true);
         try {
-            const response = await axios.post('http://192.168.0.122:8000/api/login', {
-                email,
-                password,
+            const response = await axios.post('http://192.168.1.110:8000/api/login', data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
-    
-            const { token } = response.data;
-            await AsyncStorage.setItem('authToken', token);
-    
-            // Verify stored token
-            const storedToken = await AsyncStorage.getItem('authToken');
-            console.log('Stored Token:', storedToken);
-    
-            navigation.navigate('Home');
-        } catch (error) {
-            console.error('Error details:', error.response ? error.response.data : error.message);
-            
-            if (error.response && error.response.status === 401) {
-                Alert.alert('Login Failed', 'Session expired, please login again');
-                await AsyncStorage.removeItem('authToken');
-                navigation.navigate('Login');
+
+            if (response.status === 200) {
+                const { token } = response.data;
+                await AsyncStorage.setItem('authToken', token);
+                navigation.navigate('Home');
             } else {
                 Alert.alert('Login Failed', 'Invalid email or password');
             }
+        } catch (error) {
+            console.error('Error details:', error);
+            Alert.alert('Login Failed', 'Internal Server Error');
+        } finally {
+            setLoading(false);
         }
     };
-    
-    
+
     return (
-        <View style={styles.container}>
-            <Image source={require('../assets/logo2.png')} style={styles.image} />
-            <Text style={styles.heading}>Welcome back!</Text>
-            <TextInput
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                style={styles.input}
-                autoCompleteType="email"
-                keyboardType="email-address"
-            />
-            <TextInput
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                style={styles.input}
-                secureTextEntry
-            />
-            <Text style={styles.confirmText}>Please enter your credentials</Text>
-            <TouchableOpacity style={styles.buttonContainer} onPress={handleLogin}>
-                <LinearGradient
-                    colors={['#00509F', '#001D39']}
-                    style={styles.gradient}
-                >
-                    <Text style={styles.buttonText}>Log in</Text>
-                </LinearGradient>
-            </TouchableOpacity>
-            <Text style={styles.registerText}>
-                Don't have an account? 
-                <Text style={styles.registerLink} onPress={() => navigation.navigate('Register')}> Sign up</Text>
-            </Text>
-        </View>
+        <>
+            {loading && <Loading />}
+            <View style={styles.container}>
+                <Image source={require('../assets/logo2.png')} style={styles.image} />
+                <Text style={styles.heading}>Welcome back!</Text>
+                <Input
+                    name="email"
+                    control={control}
+                    placeholder="Email"
+                    errors={errors}
+                    secureTextEntry={false}
+                />
+                <Input
+                    name="password"
+                    control={control}
+                    placeholder="Password"
+                    errors={errors}
+                    secureTextEntry={true}
+                />
+                <Text style={styles.confirmText}>Please enter your credentials</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit(onSubmit)}>
+                    <LinearGradient
+                        colors={['#00509F', '#001D39']}
+                        style={styles.gradient}
+                    >
+                        <Text style={styles.buttonText}>Log in</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+                <Text style={styles.registerText}>
+                    Don't have an account?
+                    <Text style={styles.registerLink} onPress={() => navigation.navigate('Register')}> Sign up</Text>
+                </Text>
+            </View>
+        </>
     );
 }
 
@@ -95,14 +137,28 @@ const styles = StyleSheet.create({
         letterSpacing: -0.32,
         color: '#00000099',
     },
-    input: {
+    inputContainer: {
         width: '90%',
+        position: 'relative',
+        marginBottom: 15,
+    },
+    input: {
         height: 50,
         borderColor: '#00509F',
         borderWidth: 1,
         borderRadius: 30,
         paddingHorizontal: 15,
-        marginBottom: 15,
+    },
+    eyeIcon: {
+        position: 'absolute',
+        right: 15,
+        top: 15,
+    },
+    errorText: {
+        color: 'red',
+        alignSelf: 'flex-start',
+        marginLeft: 15,
+        marginTop: 5,
     },
     confirmText: {
         alignSelf: 'flex-start',

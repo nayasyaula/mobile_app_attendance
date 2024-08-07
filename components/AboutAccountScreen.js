@@ -1,77 +1,155 @@
-import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Modal, TextInput, TouchableOpacity } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AboutAccountScreen({ navigation }) {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [editableField, setEditableField] = useState(null);
+    const [editableValue, setEditableValue] = useState('');
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = await AsyncStorage.getItem('authToken');
+                const response = await axios.get('http://192.168.1.110:8000/api/users/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                setUser(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Failed to fetch user data:', error);
+                setLoading(false);
+            }
+        };
+        fetchUser();
+    }, []);
+
+    const handleEdit = (field, value) => {
+        setEditableField(field);
+        setEditableValue(value);
+        setModalVisible(true);
+    };
+
+    const handleSave = async () => {
+        const updatedUser = { ...user, [editableField]: editableValue };
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            const response = await axios.put('http://192.168.1.110:8000/api/users/update', updatedUser, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            setUser(response.data);
+            setModalVisible(false);
+        } catch (error) {
+            console.error('Failed to update user data:', error);
+        }
+    };
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#00509F" />
+            </View>
+        );
+    }
+
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
                 <View style={styles.header}>
                     <Ionicons name="arrow-back" size={24} onPress={() => navigation.goBack()} />
                     <Text style={styles.headerText}>Tentang Akun</Text>
                 </View>
                 <View style={styles.section}>
                     <Text style={styles.title}>Informasi Pribadi</Text>
-                    <Text style={styles.subtitle}>Masukkan input sesuai dengan profil pribadi</Text>
                 </View>
-                <View style={styles.form}>
+                <View style={styles.card}>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Nama Lengkap <Text style={styles.required}>*</Text></Text>
-                        <TextInput style={styles.input} placeholder="Masukkan nama lengkap" />
+                        <Ionicons name="person" size={20} color="#666" style={styles.icon} />
+                        <Text style={styles.label}>Nama Lengkap</Text>
+                        <Text style={styles.value} onPress={() => handleEdit('name', user.name)}>{user.name}</Text>
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>No.Telepon <Text style={styles.required}>*</Text></Text>
-                        <TextInput style={styles.input} placeholder="Nomor induk kependudukan" />
+                        <Ionicons name="mail" size={20} color="#666" style={styles.icon} />
+                        <Text style={styles.label}>Email</Text>
+                        <Text style={styles.value} onPress={() => handleEdit('email', user.email)}>{user.email}</Text>
                     </View>
                     <View style={styles.inputContainer}>
+                        <Ionicons name="call" size={20} color="#666" style={styles.icon} />
+                        <Text style={styles.label}>No. Telepon</Text>
+                        <Text style={styles.value} onPress={() => handleEdit('telp', user.telp || 'N/A')}>{user.telp || 'N/A'}</Text>
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Ionicons name="calendar" size={20} color="#666" style={styles.icon} />
                         <Text style={styles.label}>Tanggal Lahir</Text>
-                        <TextInput style={styles.input} placeholder="Masukkan tanggal" />
+                        <Text style={styles.value} onPress={() => handleEdit('tanggal_lahir', user.tanggal_lahir || 'N/A')}>{user.tanggal_lahir || 'N/A'}</Text>
                     </View>
                     <View style={styles.inputContainer}>
+                        <Ionicons name="location" size={20} color="#666" style={styles.icon} />
                         <Text style={styles.label}>Tempat Lahir</Text>
-                        <TextInput style={styles.input} placeholder="Bogor" />
+                        <Text style={styles.value} onPress={() => handleEdit('tempat_lahir', user.tempat_lahir || 'N/A')}>{user.tempat_lahir || 'N/A'}</Text>
                     </View>
                     <View style={styles.inputContainer}>
+                        <Ionicons name="transgender" size={20} color="#666" style={styles.icon} />
                         <Text style={styles.label}>Jenis Kelamin</Text>
-                        <TextInput style={styles.input} placeholder="Pilih" />
+                        <Text style={styles.value} onPress={() => handleEdit('jenis_kelamin', user.jenis_kelamin || 'N/A')}>{user.jenis_kelamin || 'N/A'}</Text>
                     </View>
                     <View style={styles.inputContainer}>
+                        <Ionicons name="information-circle" size={20} color="#666" style={styles.icon} />
                         <Text style={styles.label}>Status</Text>
-                        <TextInput style={styles.input} placeholder="Status anda saat ini" />
+                        <Text style={styles.value} onPress={() => handleEdit('status', user.status || 'N/A')}>{user.status || 'N/A'}</Text>
                     </View>
                     <View style={styles.inputContainer}>
+                        <Ionicons name="people" size={20} color="#666" style={styles.icon} />
                         <Text style={styles.label}>Agama</Text>
-                        <TextInput style={styles.input} placeholder="Pilih" />
+                        <Text style={styles.value} onPress={() => handleEdit('agama', user.agama || 'N/A')}>{user.agama || 'N/A'}</Text>
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Alamat Tempat Tinggal</Text>
-                        <TextInput style={styles.input} placeholder="Masukkan Kata sandi" />
+                        <Ionicons name="home" size={20} color="#666" style={styles.icon} />
+                        <Text style={styles.label}>Alamat</Text>
+                        <Text style={styles.value} onPress={() => handleEdit('alamat', user.alamat || 'N/A')}>{user.alamat || 'N/A'}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => { /* Add your navigation logic here */ }}>
-                    <LinearGradient
-                        colors={['#00509F', '#001D39']}
-                        style={styles.gradient}
-                    >
-                        <Text style={styles.buttonText}>Tambah</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            </ScrollView>
-        </KeyboardAvoidingView>
+
+                <Modal visible={modalVisible} animationType="slide">
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalTitle}>Edit {editableField}</Text>
+                        <TextInput
+                            style={styles.modalInput}
+                            value={editableValue}
+                            onChangeText={setEditableValue}
+                        />
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity style={styles.modalButton} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.modalButtonText}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.modalButton} onPress={handleSave}>
+                                <Text style={styles.modalButtonText}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#EDF3FF',
     },
     scrollContainer: {
-        padding: 20,
+        flex: 1,
+        padding: 15,
+        backgroundColor: '#EDF3FF',  
     },
     header: {
         flexDirection: 'row',
@@ -90,44 +168,80 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    subtitle: {
-        fontSize: 14,
-        color: '#666',
-    },
-    form: {
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 30,
+        padding: 20,
         marginBottom: 20,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 30,
+
     },
     inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 15,
     },
     label: {
         fontSize: 14,
         marginBottom: 5,
+        color: '#333',
+        flex: 1,
     },
-    required: {
-        color: 'red',
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
+    value: {
         fontSize: 14,
+        color: '#666',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        flex: 2,
     },
-    buttonContainer: {
-        width: '100%',
-        borderRadius: 25,
-        marginTop: 10,
+    icon: {
+        marginRight: 10,
+        color: '#00509F'
     },
-    gradient: {
+    loadingContainer: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 25,
-        paddingVertical: 15,
     },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor: '#fff',
+    },
+    modalTitle: {
+        fontSize: 18,
         fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    modalInput: {
+        width: '100%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        marginBottom: 20,
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: '#00509F',
+        alignItems: 'center',
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    modalButtonText: {
+        color: '#fff',
     },
 });

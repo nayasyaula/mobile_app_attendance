@@ -1,20 +1,46 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PasswordTwoScreen = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState('');
-    const [resetPassword, setResetPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [authToken, setAuthToken] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
+    useEffect(() => {
+        const getToken = async () => {
+            const token = await AsyncStorage.getItem('authToken');
+            setAuthToken(token);
+        };
+        getToken();
+    }, []);
 
-    const handlePasswordChange = () => {
-        // Add logic to handle password change
-        if (newPassword === resetPassword && resetPassword === confirmPassword) {
-            // Password change logic
-            console.log('Password changed successfully');
-        } else {
+    const handlePasswordChange = async () => {
+        if (newPassword !== confirmPassword) {
             console.log('Passwords do not match');
+            Alert.alert('Error', 'Passwords do not match.');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://192.168.1.110:8000/api/users/change-password', {
+                new_password: newPassword,
+                new_password_confirmation: confirmPassword,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                },
+            });
+
+            console.log('Password changed successfully', response.data);
+            Alert.alert('Success', 'Password changed successfully');
+            navigation.navigate('Profile'); // Navigate to the profile screen
+        } catch (error) {
+            console.error('Password change failed:', error.response ? error.response.data : error.message);
+            Alert.alert('Error', 'An error occurred while changing the password. Please try again.');
         }
     };
 
@@ -27,29 +53,39 @@ const PasswordTwoScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.form}>
                     <Text style={styles.label}>Kata Sandi Baru</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="kata sandi Baru"
-                        value={newPassword}
-                        onChangeText={setNewPassword}
-                        secureTextEntry
-                    />
-                    <Text style={styles.label}>Atur Ulang</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Atur ulang"
-                        value={resetPassword}
-                        onChangeText={setResetPassword}
-                        secureTextEntry
-                    />
-                    <Text style={styles.label}>Konfirmasi Kata Sandi</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Konfirmasi kata sandi"
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        secureTextEntry
-                    />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Kata Sandi Baru"
+                            value={newPassword}
+                            onChangeText={setNewPassword}
+                            secureTextEntry={!showPassword}
+                        />
+                        <Ionicons
+                            name={showPassword ? "eye-off-outline" : "eye-outline"}
+                            size={24}
+                            color="gray"
+                            onPress={() => setShowPassword(!showPassword)}
+                            style={styles.eyeIcon}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Konfirmasi Kata Sandi</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Konfirmasi Kata Sandi"
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            secureTextEntry={!showPassword}
+                        />
+                        <Ionicons
+                            name={showPassword ? "eye-off-outline" : "eye-outline"}
+                            size={24}
+                            color="gray"
+                            onPress={() => setShowPassword(!showPassword)}
+                            style={styles.eyeIcon}
+                        />
+                    </View>
                 </View>
             </ScrollView>
             <TouchableOpacity style={styles.buttonContainer} onPress={handlePasswordChange}>
@@ -92,12 +128,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     input: {
+        width: '90%',
         height: 50,
-        borderColor: '#ccc',
+        borderColor: '#00509F',
         borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 20,
-        paddingHorizontal: 10,
+        borderRadius: 30,
+        paddingHorizontal: 15,
+        marginBottom: 15,
     },
     buttonContainer: {
         width: '100%',
