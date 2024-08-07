@@ -164,7 +164,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: '#EDF3FF',
     width: '100%',
-    marginBottom: 16,
+    marginBottom: 5,
   },
   dateSection: {
     marginTop: 8,

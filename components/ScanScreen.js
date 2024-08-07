@@ -1,18 +1,64 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 const ScanScreen = () => {
   const navigation = useNavigation();
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [text, setText] = useState('Not yet scanned')
+  
+  const askForCameraPermission = () => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status == 'granted')
+    }) ()
+  }
+  //request camera
+  useEffect(() => {
+    askForCameraPermission();
+  }, []);
 
+  const handleBarcodeScanned = ({type, data}) => {
+    setScanned(true);
+    setText(data);
+    console.log('Type: ' + type + '\nData: ' + data)
+  }
+
+  if (hasPermission === null) {
+    return(
+      <View style={styles.container}>
+      <Text> Requesting for camera permission</Text>
+      </View>
+    )
+  }
+
+  if (hasPermission === false) {
+    return(
+      <View style={styles.container}>
+      <Text style={{margin: 10}}>No access to camera</Text>
+      <Button title={'Allow Camera'} onPress={()=> askForCameraPermission()}></Button>
+      </View>
+    )
+  }
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.header}>
-            <Text style={styles.text}>Scan</Text>
+        <View style={styles.barcodebox}>
+        <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarcodeScanned}
+        style={{ height: 400, width: 400}}/>
+            {/* <Text style={styles.text}>Scan</Text> */}
         </View>
-        <Ionicons name="qr-code-sharp" size={150} color="#00509F" />
+        <Text style={styles.maintext}>{text}</Text>
+        {scanned && (
+          <TouchableOpacity style={styles.scanButton} onPress={() => setScanned(false)}>
+            <Text style={styles.buttonText}>Scan again?</Text>
+          </TouchableOpacity>
+        )}        
+        {/* <Ionicons name="qr-code-sharp" size={150} color="#00509F" /> */}
       </View>
 
       <View style={styles.footer}>
@@ -43,6 +89,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'space-between', // Ensure content and footer are spaced correctly
   },
+  barcodebox: {
+    height: 250,
+    width: 220,
+    overflow: 'hidden',
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+  },
   content: {
     flex: 1,
     justifyContent: 'center',
@@ -58,6 +113,23 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'black',
     marginBottom: 50,
+  },
+  scanButton: {
+    backgroundColor: '#00509F',
+    padding: 10,
+    borderRadius: 25,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  permissionButton: {
+    backgroundColor: '#00509F',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
   },
   footer: {
     flexDirection: 'row',
